@@ -1,19 +1,5 @@
 ---
-variable "nginx_user" {
-  description = "User to run nginx as"
-  default = "www-data"
-}
-
-variable "webroot" {
-  description = "Nginx web root location"
-  default = "/var/www"
-}
-
-variable "php_version" {
-  description = "PHP version to install"
-  default = "72"
-}
-
-variable "php_mods" {
-  description = "List of php modes to install"
-}
+webroot:
+nginx_user:
+php_version: 
+php_mods:

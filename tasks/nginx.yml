@@ -9,6 +9,23 @@
     name: "${var.nginx_user}"
     state: present
 
+- name: check if EPEL repo is already configured.
+  stat: path="/etc/yum.repos.d/epel.repo"
+  register: epel_repofile_result
+ 
+- name: install EPEL repo.
+  yum:
+    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
+  register: result
+  when: not epel_repofile_result.stat.exists
+ 
+- name: import EPEL GPG key.
+  rpm_key:
+    key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
+    state: present
+  when: not epel_repofile_result.stat.exists
+
 - name: ensure nginx user exists
   user: 
     name: "${var.nginx_user}" 
