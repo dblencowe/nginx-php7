@@ -1,5 +1,2 @@
 ---
-- name: install nginx
-  include: nginx.yml
-- name: install php
-  include: php.yml
+- include_vars: "defaults/main.yml"
