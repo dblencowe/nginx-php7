@@ -1,13 +1,6 @@
 ---
-- name: install nginx
-  package:
-    name: nginx 
-    state: latest
-
-- name: ensure nginx user group exists
-  group:
-    name: "${var.nginx_user}"
-    state: present
+- debug:
+    msg: "nginx user: {{ nginx_user }}"
 
 - name: check if EPEL repo is already configured.
   stat: path="/etc/yum.repos.d/epel.repo"
@@ -26,20 +19,30 @@
     state: present
   when: not epel_repofile_result.stat.exists
 
+- name: install nginx
+  package:
+    name: nginx 
+    state: latest
+
+- name: ensure nginx user group exists
+  group:
+    name: "{{ nginx_user }}"
+    state: present
+
 - name: ensure nginx user exists
   user: 
-    name: "${var.nginx_user}" 
+    name: "{{ nginx_user }}" 
     comment: "nginx web user" 
     shell: "/usr/bin/false" 
-    groups: "${var.nginx_user}" 
-    home: "${var.webroot}"
+    groups: "{{ nginx_user }}" 
+    home: "{{ webroot }}"
  
 - name: set correct www directory ownership
   file:
     state: directory
-    path: "{var.webroot}"
-    owner: "${var.nginx_user}"
-    group: "${var.nginx_user}"
+    path: "{{ webroot }}"
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_user }}"
     recurse: yes
 
 - name: update nginx.conf

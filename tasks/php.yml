@@ -20,8 +20,8 @@
   package: 
     name: "{{ item }}"
     state: latest
-    enablerepo: "remi-php${var.php_version}"
-  with_items: "${var.php_mods}"
+    enablerepo: "remi-php{{ php_version }}"
+  with_items: "{{ php_mods }}"
 
 - name: copy the custom settings
   template:
