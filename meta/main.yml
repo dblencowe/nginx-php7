@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Dave Blencowe
-  description: PURPOSE
+  description: Install a basic Nginx / PHP7 setup
   license: BSD
   min_ansible_version: 2.0
   platforms:
@@ -9,5 +9,7 @@ galaxy_info:
       versions:
         - 7
   galaxy_tags:
-    - tag
+    - nginx
+    - php7
+    - centos7
 dependencies: []

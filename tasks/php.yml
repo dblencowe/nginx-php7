@@ -1,0 +1,35 @@
+---
+- name: check if Remi repo is already configured.
+  stat: path="/etc/yum.repos.d/remi.repo"
+  register: remi_repofile_result
+ 
+- name: install Remi repo.
+  yum:
+    name: "http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm"
+    state: present
+  register: result
+  when: not remi_repofile_result.stat.exists
+ 
+- name: import Remi GPG key.
+  rpm_key:
+    key: "http://rpms.remirepo.net/RPM-GPG-KEY-remi"
+    state: present
+  when: not remi_repofile_result.stat.exists
+
+- name: install PHP
+  package: 
+    name: "{{ item }}"
+    state: latest
+    enablerepo: "remi-php${var.php_version}"
+  with_items: "${var.php_mods}"
+
+- name: copy the custom settings
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: 'www.conf.j2', dest: '/etc/php-fpm.d/www.conf' }
+    - { src: 'php.ini.j2', dest: '/etc/php.ini' }
+  notify:
+    - restart php-fpm
+    - restart nginx
