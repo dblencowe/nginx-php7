@@ -1,7 +1,1 @@
 ---
-connections: 1024
-php_mods:
-  - php-fpm
-nginx_user: "www-data"
-php_version: 72
-webroot: "/var/www"
