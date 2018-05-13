@@ -30,6 +30,3 @@
   with_items:
     - { src: 'www.conf.j2', dest: '/etc/php-fpm.d/www.conf' }
     - { src: 'php.ini.j2', dest: '/etc/php.ini' }
-  notify:
-    - restart php-fpm
-    - restart nginx
